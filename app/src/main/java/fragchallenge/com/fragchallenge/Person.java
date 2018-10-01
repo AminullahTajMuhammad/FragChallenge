@@ -4,11 +4,13 @@ public class Person {
     private String name;
     private String number;
     private String modelName;
+    private String carlogo;
 
-    public Person(String name, String number, String modelName) {
+    public Person(String name, String number, String modelName, String carlogo) {
         this.name = name;
         this.number = number;
         this.modelName = modelName;
+        this.carlogo = carlogo;
     }
 
     public String getName() {
@@ -33,5 +35,13 @@ public class Person {
 
     public void setModelName(String modelName) {
         this.modelName = modelName;
+    }
+
+    public String getCarlogo() {
+        return carlogo;
+    }
+
+    public void setCarlogo(String carlogo) {
+        this.carlogo = carlogo;
     }
 }
