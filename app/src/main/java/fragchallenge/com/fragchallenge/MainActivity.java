@@ -15,19 +15,19 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements PersonAdapter.onItemClicked{
-    ArrayList<Person> data;
+    //ArrayList<Person> data;
 
     TextView tvOwnerName, tvOwnerNumber;            // in frag carname = owner info
 
     TextView tvCarName;         // in frag car info
     ImageView imgCar;           // in frag car info
 
-    TextView tvListCarName, tvlistOwnerName;        // in list_item layout
-    ImageView imgListCarLogo;                       // in list_item layout
-
 
     Button btnCarInfo;
     Button btnOwnerInfo;
+
+    FragmentManager fragmentManager;
+    Fragment listFrag, CarInfoFrag, OwnerInfoFrag, ButtonFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,60 +40,52 @@ public class MainActivity extends AppCompatActivity implements PersonAdapter.onI
         btnCarInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceWithCarInfoFragment();
+                fragmentManager.beginTransaction()
+                        .show(CarInfoFrag).hide(OwnerInfoFrag).commit();
             }
         });
         btnOwnerInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceWithOwnerInfoFragment();
+
+                fragmentManager.beginTransaction()
+                        .hide(CarInfoFrag).show(OwnerInfoFrag).commit();
             }
         });
 
         tvOwnerName = findViewById(R.id.tvOwnerName);
         tvOwnerNumber = findViewById(R.id.tvOwnerNumber);
         tvCarName = findViewById(R.id.CarName);
-        tvListCarName = findViewById(R.id.tvListCarName);
-        tvlistOwnerName = findViewById(R.id.tvListOwnerName);
+        imgCar = findViewById(R.id.imgCar);
 
-        FragmentManager fragmentManager;
-        Fragment listFrag, CarinfoFrag, ownerInfoFrag, ButtonFrag;
+
 
         fragmentManager = getSupportFragmentManager();
         listFrag = fragmentManager.findFragmentById(R.id.ListFrag);
         ButtonFrag = fragmentManager.findFragmentById(R.id.ButtonFrag);
+        CarInfoFrag = fragmentManager.findFragmentById(R.id.FragCarIngo);
+        OwnerInfoFrag = fragmentManager.findFragmentById(R.id.FragOwnerInfo);
 
         fragmentManager.beginTransaction()
-                .show(listFrag).show(ButtonFrag).commit();
+                .show(listFrag).show(ButtonFrag).show(CarInfoFrag).hide(OwnerInfoFrag).commit();
 
 
     }
 
-    void replaceWithCarInfoFragment(){
-        // Begin the transaction
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        // Replace the contents of the container with the new fragment
-        ft.replace(R.id.container, new FragCarInfo());
-        // or ft.add(R.id.your_placeholder, new FooFragment());
-        // Complete the changes added above
-        ft.commit();
-    }
-
-    void replaceWithOwnerInfoFragment(){
-        // Begin the transaction
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        // Replace the contents of the container with the new fragment
-        ft.replace(R.id.container, new FragCarName());
-        // or ft.add(R.id.your_placeholder, new FooFragment());
-        // Complete the changes added above
-        ft.commit();
-    }
     @Override
     public void onClick(int index) {
         tvOwnerName.setText(ApplicationClass.data.get(index).getName());
+        tvCarName.setText(ApplicationClass.data.get(index).getModelName());
         tvOwnerNumber.setText(ApplicationClass.data.get(index).getNumber());
-        tvlistOwnerName.setText(ApplicationClass.data.get(index).getName());
-        tvListCarName.setText(ApplicationClass.data.get(index).getModelName());
 
+        if(ApplicationClass.data.get(index).getCarlogo().equals("Volkswagen")) {
+            imgCar.setImageResource(R.drawable.volkswagen);
+        }
+        if(ApplicationClass.data.get(index).getCarlogo().equals("Nissan")) {
+            imgCar.setImageResource(R.drawable.nissan);
+        }
+        if(ApplicationClass.data.get(index).getCarlogo().equals("Mercedes")) {
+            imgCar.setImageResource(R.drawable.mercedes);
+        }
     }
 }

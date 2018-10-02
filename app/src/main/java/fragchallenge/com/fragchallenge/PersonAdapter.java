@@ -36,8 +36,18 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull PersonAdapter.ViewHolder viewHolder, int i) {
         viewHolder.itemView.setTag(list.get(i));
+
         viewHolder.tvCarName.setText(list.get(i).getModelName());
         viewHolder.tvOwnerName.setText(list.get(i).getName());
+        if(list.get(i).getCarlogo().equals("Volkswagen")) {
+            viewHolder.imageCar.setImageResource(R.drawable.volkswagen);
+        }
+        else if(list.get(i).getCarlogo().equals("Nissan")) {
+            viewHolder.imageCar.setImageResource(R.drawable.nissan);
+        }
+        else {
+            viewHolder.imageCar.setImageResource(R.drawable.mercedes);
+        }
     }
 
     @Override
@@ -46,17 +56,18 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgCar;
+        ImageView imageCar;
         TextView tvCarName, tvOwnerName;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            imageCar = itemView.findViewById(R.id.imglistCarlogo);
             tvCarName = itemView.findViewById(R.id.tvListCarName);
             tvOwnerName = itemView.findViewById(R.id.tvListOwnerName);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    activity.onClick(list.indexOf(v.getTag()));
+                    activity.onClick(list.indexOf( (Person) v.getTag()));
                 }
             });
         }
